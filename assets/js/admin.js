@@ -53,6 +53,7 @@
         if (!window.confirm('Delete this file? This cannot be undone.')) return;
         await fetch('/api/admin-delete', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json', 'X-Admin-Request': '1' },
           body: JSON.stringify({ id: btn.getAttribute('data-delete') })
         });
@@ -62,8 +63,21 @@
   }
 
   async function checkSession() {
-    var resp = await fetch('/api/admin-files', { headers: { 'X-Admin-Request': '1' } });
-    if (!resp.ok) { showLogin(); return; }
+    var resp = await fetch('/api/admin-files', { headers: { 'X-Admin-Request': '1' }, credentials: 'same-origin' });
+
+    if (resp.status === 401) { showLogin(); return; }
+
+    if (!resp.ok) {
+      // Not a plain "you're not logged in" — surface the real error (e.g. R2
+      // not bound yet) instead of silently bouncing back to a blank login form.
+      var errData = await resp.json().catch(function () { return {}; });
+      showLogin();
+      var errorBox = document.getElementById('admin-login-error');
+      errorBox.textContent = errData.error || ('Server error (HTTP ' + resp.status + ').');
+      errorBox.classList.add('visible');
+      return;
+    }
+
     var data = await resp.json();
     showPanel();
     renderFiles(data.files || []);
@@ -79,6 +93,7 @@
       var password = document.getElementById('admin-password').value;
       var resp = await fetch('/api/admin-login', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', 'X-Admin-Request': '1' },
         body: JSON.stringify({ password: password })
       });
@@ -93,7 +108,7 @@
     });
 
     document.getElementById('admin-logout').addEventListener('click', async function () {
-      await fetch('/api/admin-logout', { method: 'POST', headers: { 'X-Admin-Request': '1' } });
+      await fetch('/api/admin-logout', { method: 'POST', credentials: 'same-origin', headers: { 'X-Admin-Request': '1' } });
       showLogin();
     });
 
@@ -117,6 +132,7 @@
       try {
         var resp = await fetch('/api/admin-upload', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: {
             'X-Admin-Request': '1',
             'X-File-Name': encodeURIComponent(file.name),
