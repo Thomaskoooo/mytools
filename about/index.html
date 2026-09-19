@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About MyTools — Free, Privacy-Friendly IT Tools</title>
+<meta name="description" content="MyTools is a free collection of privacy-friendly IT and web tools for developers, students and everyday use — no signup, no tracking, no accounts.">
+<link rel="canonical" href="https://mytools.pages.dev/about/">
+<meta property="og:title" content="About MyTools">
+<meta property="og:description" content="A free collection of privacy-friendly IT and web tools — no signup required.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mytools.pages.dev/about/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem('mt-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/" aria-label="MyTools home"><span class="logo-mark">M</span>MyTools</a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="/tools/">Tools</a>
+      <a href="/tools/#categories">Categories</a>
+      <a href="/about/" aria-current="page">About</a>
+    </nav>
+    <div class="header-spacer"></div>
+    <div class="header-search">
+      <input type="search" id="header-search-input" placeholder="Search tools..." aria-label="Search tools" autocomplete="off">
+      <div class="search-results" role="listbox" aria-label="Search results"></div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark / light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container-narrow" style="padding-top:20px;padding-bottom:60px">
+    <div class="breadcrumbs"><a href="/">Home</a> / <span>About</span></div>
+    <h1 style="font-size:2rem;letter-spacing:-0.02em">About MyTools</h1>
+    <div class="prose">
+      <p>MyTools is a small collection of everyday IT and web utilities — an IP subnet calculator, JSON formatter, password generator, QR code generator, and a couple dozen others — built to be fast, free and usable without creating an account.</p>
+
+      <h2>Why we built this</h2>
+      <p>Most "online tool" sites bury a simple utility under ads, trackers and multi-step sign-up flows. MyTools does the opposite: pick a tool, use it, done. Almost every tool runs entirely in your browser, so your input is never uploaded anywhere.</p>
+
+      <h2>How it's built</h2>
+      <p>The site is static HTML, CSS and vanilla JavaScript — no framework, no build step, no client-side tracking scripts. The two tools that genuinely need a server (DNS Lookup and the HTTP Headers Checker) are powered by small serverless functions that make the request on your behalf and immediately return the result, with no logging of what you looked up beyond standard, temporary infrastructure logs.</p>
+
+      <h2>No accounts, ever</h2>
+      <p>There is no login, no user database and nothing to sign up for. Every tool is available to every visitor, instantly.</p>
+
+      <h2>Feedback</h2>
+      <p>Found a bug or have an idea for a new tool? Open an issue on our <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a> page.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col"><h4>MyTools</h4><a href="/tools/">All Tools</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></div>
+      <div class="footer-col"><h4>Categories</h4><a href="/tools/?category=networking">Networking</a><a href="/tools/?category=development">Development</a><a href="/tools/?category=text">Text</a><a href="/tools/?category=generators">Generators</a></div>
+      <div class="footer-col"><h4>Project</h4><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footer-year">2026</span> MyTools. Most tools run entirely in your browser.</div>
+  </div>
+</footer>
+
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/app.js"></script>
+<script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

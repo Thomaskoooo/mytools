@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — MyTools</title>
+<meta name="description" content="How MyTools handles your data: which tools run entirely in your browser, which require a server request, and what we do (and don't) log or store.">
+<link rel="canonical" href="https://mytools.pages.dev/privacy/">
+<meta property="og:title" content="Privacy Policy — MyTools">
+<meta property="og:description" content="How MyTools handles your data across every tool.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mytools.pages.dev/privacy/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem('mt-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/" aria-label="MyTools home"><span class="logo-mark">M</span>MyTools</a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="/tools/">Tools</a>
+      <a href="/tools/#categories">Categories</a>
+      <a href="/about/">About</a>
+    </nav>
+    <div class="header-spacer"></div>
+    <div class="header-search">
+      <input type="search" id="header-search-input" placeholder="Search tools..." aria-label="Search tools" autocomplete="off">
+      <div class="search-results" role="listbox" aria-label="Search results"></div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark / light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container-narrow" style="padding-top:20px;padding-bottom:60px">
+    <div class="breadcrumbs"><a href="/">Home</a> / <span>Privacy</span></div>
+    <h1 style="font-size:2rem;letter-spacing:-0.02em">Privacy Policy</h1>
+    <div class="prose">
+      <p><strong>Short version:</strong> almost every tool runs entirely in your browser. Your input is never sent anywhere for those tools. Two tools need a server request to work at all — DNS Lookup and the HTTP Headers Checker — and both are clearly labeled.</p>
+
+      <h2>Client-side tools ("runs locally in your browser")</h2>
+      <p>Tools marked with the green <span class="badge badge-local">runs locally in your browser</span> badge — including the IP Calculator, VLSM Calculator, IP Address Information, JSON Formatter, Base64, JWT Decoder, UUID Generator, Hash Generator, Text Counter, Case Converter, Lorem Ipsum, Password Generator, QR Code Generator, Timestamp Converter, Number Base Converter, URL Encoder, HTML Entity Encoder, HTTP Status Lookup and Regex Tester — process everything using JavaScript running on your own device. Nothing you type into these tools is transmitted to our servers, logged, or stored anywhere.</p>
+
+      <h2>Server-side tools ("requires server request")</h2>
+      <p>Tools marked with the amber <span class="badge badge-server">requires server request</span> badge — DNS Lookup and the HTTP Headers Checker — must contact a server, because browsers cannot perform raw DNS queries or read cross-origin response headers directly. For these two tools:</p>
+      <ul>
+        <li>The domain or URL you submit is sent to our serverless function, which performs the lookup and returns the result to you.</li>
+        <li>We do not write the domains or URLs you check to any database or persistent log. Cloudflare's standard, short-lived infrastructure request logs (used for abuse prevention and debugging) may briefly include the request, consistent with Cloudflare's own logging practices.</li>
+        <li>The HTTP Headers Checker refuses to contact local or private network addresses (localhost, private IP ranges, link-local addresses, etc.) as a security measure — see the tool page for details.</li>
+      </ul>
+
+      <h2>No accounts, no analytics by default</h2>
+      <p>MyTools has no user accounts, no login, and does not use third-party analytics or advertising trackers. If analytics are ever added, it will be a privacy-respecting, cookie-free option and this page will be updated first.</p>
+
+      <h2>Cookies &amp; local storage</h2>
+      <p>We use your browser's <code>localStorage</code> only to remember your dark/light mode preference. This never leaves your device and is never read by our servers.</p>
+
+      <h2>Third-party services</h2>
+      <p>DNS Lookup and the HTTP Headers Checker make outbound requests to public DNS resolvers and the URLs you provide, respectively, in order to return a result. No other third-party service receives your data.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If this policy changes in a way that affects how your data is handled, this page will be updated and the date below will reflect it.</p>
+
+      <p class="field-hint">Last updated: 2026-09-19</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col"><h4>MyTools</h4><a href="/tools/">All Tools</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></div>
+      <div class="footer-col"><h4>Categories</h4><a href="/tools/?category=networking">Networking</a><a href="/tools/?category=development">Development</a><a href="/tools/?category=text">Text</a><a href="/tools/?category=generators">Generators</a></div>
+      <div class="footer-col"><h4>Project</h4><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footer-year">2026</span> MyTools. Most tools run entirely in your browser.</div>
+  </div>
+</footer>
+
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/app.js"></script>
+<script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

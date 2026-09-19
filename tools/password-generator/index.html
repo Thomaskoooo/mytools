@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strong Password Generator — Free & Secure | MyTools</title>
+<meta name="description" content="Generate strong, random passwords with adjustable length and character sets using your browser's cryptographically secure random number generator. Passwords never leave your device.">
+<link rel="canonical" href="https://mytools.pages.dev/tools/password-generator/">
+<meta property="og:title" content="Password Generator | MyTools">
+<meta property="og:description" content="Generate strong random passwords with adjustable length and character sets.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mytools.pages.dev/tools/password-generator/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem('mt-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Home","item":"https://mytools.pages.dev/"},
+{"@type":"ListItem","position":2,"name":"Tools","item":"https://mytools.pages.dev/tools/"},
+{"@type":"ListItem","position":3,"name":"Password Generator","item":"https://mytools.pages.dev/tools/password-generator/"}]}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/" aria-label="MyTools home"><span class="logo-mark">M</span>MyTools</a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a href="/tools/#categories">Categories</a>
+      <a href="/about/">About</a>
+    </nav>
+    <div class="header-spacer"></div>
+    <div class="header-search">
+      <input type="search" id="header-search-input" placeholder="Search tools..." aria-label="Search tools" autocomplete="off">
+      <div class="search-results" role="listbox" aria-label="Search results"></div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark / light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container">
+    <div class="breadcrumbs"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Password Generator</span></div>
+    <div class="tool-header">
+      <h1>Password Generator</h1>
+      <p>Generate strong random passwords with adjustable length and character sets.</p>
+      <span class="badge badge-local">runs locally in your browser</span>
+    </div>
+
+    <div class="tool-grid single">
+      <div class="card">
+        <div class="field">
+          <label>Generated password</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="pw-output" readonly style="font-family:var(--font-mono); font-size:1.05rem" aria-label="Generated password">
+            <button class="btn" type="button" id="pw-copy" aria-label="Copy password">Copy</button>
+          </div>
+          <div class="strength-meter"><span id="pw-strength-bar" style="width:0%"></span></div>
+          <p class="field-hint" id="pw-strength-label"></p>
+        </div>
+
+        <div class="field">
+          <label for="pw-length">Length: <span id="pw-length-value">16</span></label>
+          <input type="range" id="pw-length" min="8" max="128" value="16">
+        </div>
+
+        <div class="checkbox-group" style="margin-bottom:16px">
+          <label class="checkbox-item"><input type="checkbox" id="pw-lower" checked> Lowercase (a-z)</label>
+          <label class="checkbox-item"><input type="checkbox" id="pw-upper" checked> Uppercase (A-Z)</label>
+          <label class="checkbox-item"><input type="checkbox" id="pw-numbers" checked> Numbers (0-9)</label>
+          <label class="checkbox-item"><input type="checkbox" id="pw-symbols"> Symbols (!@#$...)</label>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" id="pw-generate">Generate new</button>
+        </div>
+        <div class="error-box" id="pw-error" role="alert"></div>
+      </div>
+    </div>
+
+    <section class="prose">
+      <h2>About this tool</h2>
+      <p>Passwords are generated using <code>crypto.getRandomValues()</code>, the browser's cryptographically secure random number source, with rejection sampling to avoid modulo bias. The password is never transmitted anywhere — it's generated and displayed entirely on your device. The entropy estimate (in bits) reflects how many character-set combinations an attacker would need to brute-force; aim for at least 60 bits for most accounts, more for anything sensitive.</p>
+    </section>
+
+    <section class="related-tools">
+      <div class="section-title"><h2>Related tools</h2></div>
+      <div class="grid" id="related-tools-grid"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col"><h4>MyTools</h4><a href="/tools/">All Tools</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></div>
+      <div class="footer-col"><h4>Categories</h4><a href="/tools/?category=networking">Networking</a><a href="/tools/?category=development">Development</a><a href="/tools/?category=text">Text</a><a href="/tools/?category=generators">Generators</a></div>
+      <div class="footer-col"><h4>Project</h4><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footer-year">2026</span> MyTools. Most tools run entirely in your browser.</div>
+  </div>
+</footer>
+
+<script src="/assets/js/icons.js"></script>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/app.js"></script>
+<script>
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+  document.getElementById('pw-copy').innerHTML = mtIcon('copy');
+  (function () {
+    var current = window.MT_TOOLS.find(function (t) { return t.id === 'password-generator'; });
+    var related = window.MT_TOOLS.filter(function (t) { return t.category === current.category && t.id !== current.id; }).slice(0, 3);
+    document.getElementById('related-tools-grid').innerHTML = related.map(function (t) {
+      return '<a class="tool-card" href="' + t.url + '"><span class="tool-icon">' + mtIcon(t.icon) + '</span><span><h3>' + mtEscapeHtml(t.name) + '</h3><p>' + mtEscapeHtml(t.description) + '</p></span></a>';
+    }).join('');
+  })();
+</script>
+<script src="/assets/js/tools/password-generator.js"></script>
+</body>
+</html>

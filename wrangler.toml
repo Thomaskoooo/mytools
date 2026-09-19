@@ -1,0 +1,14 @@
+name = "mytools"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "."
+
+# Optional: enables the KV-backed rate limiter in functions/_utils.js.
+# Without this binding, the API endpoints skip rate limiting and rely solely
+# on Cloudflare's dashboard Rate Limiting Rules (recommended either way).
+# Create the namespace first with:
+#   wrangler kv namespace create RATE_LIMIT_KV
+# then paste the returned id below and uncomment.
+#
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
