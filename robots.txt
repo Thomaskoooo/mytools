@@ -4,4 +4,4 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /s/
 
-Sitemap: https://mytools.pages.dev/sitemap.xml
+Sitemap: https://12367123.xyz/sitemap.xml
