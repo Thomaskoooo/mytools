@@ -19,7 +19,7 @@ yap/
 ├── sitemap.xml
 ├── _headers                    Bezpečnostné HTTP hlavičky (CSP, HSTS, ...) pre Cloudflare Pages
 ├── favicon.svg
-├── wrangler.toml                Voliteľná konfigurácia pre Wrangler CLI / KV binding
+├── wrangler.toml.example        Voliteľná konfigurácia pre lokálny Wrangler CLI / KV binding (pozri nižšie)
 ├── assets/
 │   ├── css/style.css            Celý dizajnový systém (dark/light mode)
 │   └── js/
@@ -53,33 +53,42 @@ grep -rl "mytools.pages.dev" . --include="*.html" --include="*.xml" --include="*
 
 ## Lokálny vývoj
 
-Statické stránky si vieš pozrieť akýmkoľvek statickým serverom (napr. `python3 -m http.server`), ale `/api/dns` a `/api/http-headers` takto fungovať nebudú — tie potrebujú Workers runtime. Na plné lokálne testovanie vrátane Functions nainštaluj [Wrangler](https://developers.cloudflare.com/workers/wrangler/):
+Statické stránky si vieš pozrieť akýmkoľvek statickým serverom (napr. `python3 -m http.server`), ale `/api/dns` a `/api/http-headers` takto fungovať nebudú — tie potrebujú Workers runtime. Na plné lokálne testovanie vrátane Functions nainštaluj [Wrangler](https://developers.cloudflare.com/workers/wrangler/) a skopíruj si lokálnu (necommitovanú) konfiguráciu:
 
 ```bash
 npm install -g wrangler
+cp wrangler.toml.example wrangler.toml   # len lokálne, tento súbor sa necommituje
 wrangler pages dev .
 ```
 
 Toto spustí celý web (statické súbory aj `/api/*` funkcie) lokálne na `http://localhost:8788`.
 
+> **Prečo `wrangler.toml.example`, nie `wrangler.toml`?** Ak je `wrangler.toml` prítomný v Git repozitári, ktorý je pripojený cez Cloudflare's Git integráciu, Cloudflare prepne build do režimu "Wrangler configuration file (BETA)" a spúšťa `wrangler pages deploy` priamo v CI — čo si vyžaduje vlastný `CLOUDFLARE_API_TOKEN` so správnymi právami a v praxi to vie zlyhávať na nedostatočne oprávnenom auto-generovanom tokene. Bez `wrangler.toml` v repozitári Cloudflare použije svoj štandardný (spoľahlivejší) statický Pages build, ktorý žiadny token ani wrangler nepotrebuje. Súbor `wrangler.toml.example` slúži iba ako predloha pre lokálny vývoj.
+
 ## Nasadenie na Cloudflare Pages
 
 ### Možnosť A — cez Git (odporúčané)
 
-1. Nahraj tento priečinok do vlastného Git repozitára (GitHub/GitLab).
+1. Nahraj tento priečinok do vlastného Git repozitára (GitHub/GitLab) — **bez** premenovania `wrangler.toml.example` na `wrangler.toml`.
 2. V [Cloudflare dashboarde](https://dash.cloudflare.com/) choď na **Workers & Pages → Create → Pages → Connect to Git**.
 3. Vyber repozitár.
 4. Build nastavenia:
    - **Framework preset**: None
-   - **Build command**: (nechaj prázdne — nie je potrebný žiadny build)
+   - **Build command**: (nechaj prázdne)
+   - **Deploy command**: (nechaj prázdne — nezadávaj `wrangler ...`, pozri poznámku vyššie)
    - **Build output directory**: `/`
-5. Klikni **Save and Deploy**. Cloudflare automaticky rozpozná priečinok `functions/` a nasadí ho ako Pages Functions.
+5. Klikni **Save and Deploy**. Cloudflare automaticky rozpozná priečinok `functions/` a nasadí ho ako Pages Functions, bez potreby wrangler tokenu.
+
+Ak build zlyhá s chybou o `wrangler deploy` alebo `CLOUDFLARE_API_TOKEN`, skontroluj v **Settings → Builds and deployments**, či náhodou nie je nastavený vlastný Build/Deploy command — vymaž ho a retry.
 
 ### Možnosť B — priamy upload cez Wrangler CLI (bez Git, bez SSH)
+
+Toto používa TVOJ vlastný, správne oprávnený API token (nie automaticky generovaný CI token), takže sa mu vyhýbajú problémy s oprávneniami z Možnosti A:
 
 ```bash
 npm install -g wrangler
 wrangler login
+cp wrangler.toml.example wrangler.toml
 wrangler pages deploy . --project-name=mytools
 ```
 
@@ -92,7 +101,7 @@ wrangler pages deploy . --project-name=mytools
      ```bash
      wrangler kv namespace create RATE_LIMIT_KV
      ```
-     Vypísané `id` vlož do `wrangler.toml` (odkomentuj sekciu `[[kv_namespaces]]`) alebo priraď binding `RATE_LIMIT_KV` v dashboarde (**Settings → Functions → KV namespace bindings**). Bez tohto bindingu appka funguje normálne ďalej, len bez vlastného rate-limitu na strane kódu.
+     Vypísané `id` vlož do lokálneho `wrangler.toml` (odkomentuj sekciu `[[kv_namespaces]]`, iba pre lokálny vývoj) alebo priraď binding `RATE_LIMIT_KV` v dashboarde (**Settings → Functions → KV namespace bindings**). Bez tohto bindingu appka funguje normálne ďalej, len bez vlastného rate-limitu na strane kódu.
 3. **Overenie bezpečnostných hlavičiek**: po nasadení skontroluj cez `curl -I https://tvoja-domena.sk/`, že sú prítomné `Content-Security-Policy`, `X-Frame-Options`, `Strict-Transport-Security` (definované v súbore `_headers`).
 4. **Cron**: projekt žiadny cron/scheduled job nepotrebuje — nič netreba nastavovať.
 
