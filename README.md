@@ -1,6 +1,6 @@
 # MyTools
 
-12367123.xyz
+https://12367123.xyz
 
 Kolekcia 21 IT/web nástrojov (IP kalkulačka, JSON formatter, JWT decoder, generátor hesiel, QR generátor, DNS lookup a ďalšie) na jednom mieste. Bez registrácie, bez trackingu, bez databázy.
 
