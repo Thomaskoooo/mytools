@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — MyTools</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem('mt-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px">
+  <div class="container-narrow" style="width:100%; max-width:560px">
+
+    <div id="admin-login-view" style="display:none">
+      <div class="card">
+        <h1 style="font-size:1.4rem; margin:0 0 6px">Admin</h1>
+        <p class="field-hint" style="margin:0 0 18px">Temporary file sharing — sign in to upload.</p>
+        <form id="admin-login-form">
+          <div class="field">
+            <label for="admin-password">Password</label>
+            <input type="password" id="admin-password" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+          <div class="error-box" id="admin-login-error" role="alert"></div>
+        </form>
+      </div>
+    </div>
+
+    <div id="admin-panel-view" style="display:none">
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+          <h1 style="font-size:1.3rem; margin:0">Share a file</h1>
+          <button class="btn btn-sm" type="button" id="admin-logout">Log out</button>
+        </div>
+        <form id="admin-upload-form">
+          <div class="field">
+            <label for="admin-file-input">File (max 100 MB, link expires in 24 hours)</label>
+            <input type="file" id="admin-file-input" required>
+          </div>
+          <button class="btn btn-primary" type="submit">Upload</button>
+          <p class="field-hint" id="admin-upload-status" style="margin-top:8px"></p>
+          <div class="error-box" id="admin-upload-error" role="alert"></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:1.05rem; margin:0 0 12px">Your files</h2>
+        <div id="admin-file-list"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/admin.js"></script>
+</body>
+</html>

@@ -33,11 +33,20 @@ yap/
 │   └── <nazov-nastroja>/index.html   21 samostatných stránok nástrojov
 ├── about/index.html
 ├── privacy/index.html
+├── admin/index.html              Password-gated dočasné zdieľanie súborov (noindex, nie je v nav/search)
 └── functions/
     ├── _utils.js                 Zdieľané helpery (JSON response, rate limiting, timeout)
-    └── api/
-        ├── dns.js                 GET /api/dns?domain=... (DNS-over-HTTPS lookup)
-        └── http-headers.js        GET /api/http-headers?url=... (SSRF-safe HTTP header checker)
+    ├── _auth.js                  Bezstavová admin session (HMAC-podpísaný cookie, žiadna DB)
+    ├── api/
+    │   ├── dns.js                 GET /api/dns?domain=... (DNS-over-HTTPS lookup)
+    │   ├── http-headers.js        GET /api/http-headers?url=... (SSRF-safe HTTP header checker)
+    │   ├── admin-login.js         POST /api/admin-login (heslo → session cookie)
+    │   ├── admin-logout.js        POST /api/admin-logout
+    │   ├── admin-upload.js        POST /api/admin-upload (streamuje priamo do R2)
+    │   ├── admin-files.js         GET /api/admin-files (zoznam + lazy mazanie expirovaných)
+    │   └── admin-delete.js        POST /api/admin-delete
+    └── s/
+        └── [id].js                GET /s/:id — verejný (bez hesla) download/preview odkaz
 ```
 
 ## Pred nasadením: nahraď placeholder doménu
@@ -104,6 +113,11 @@ wrangler pages deploy . --project-name=mytools
      Vypísané `id` vlož do lokálneho `wrangler.toml` (odkomentuj sekciu `[[kv_namespaces]]`, iba pre lokálny vývoj) alebo priraď binding `RATE_LIMIT_KV` v dashboarde (**Settings → Functions → KV namespace bindings**). Bez tohto bindingu appka funguje normálne ďalej, len bez vlastného rate-limitu na strane kódu.
 3. **Overenie bezpečnostných hlavičiek**: po nasadení skontroluj cez `curl -I https://tvoja-domena.sk/`, že sú prítomné `Content-Security-Policy`, `X-Frame-Options`, `Strict-Transport-Security` (definované v súbore `_headers`).
 4. **Cron**: projekt žiadny cron/scheduled job nepotrebuje — nič netreba nastavovať.
+5. **`/admin/` dočasné zdieľanie súborov** — vyžaduje dve veci, inak vráti chybu "not configured":
+   - **R2 bucket**: Dashboard → **R2 Object Storage** → **Create bucket**, pomenuj napr. `mytools-uploads` (v tomto účte ešte môže byť potrebné najprv R2 aktivovať — je to samostatná zložka Cloudflare produktov, free tier zahŕňa 10 GB úložiska mesačne). Potom v projekte **mytools** → **Settings → Functions → R2 bucket bindings** → **Add binding** → variable name presne `UPLOADS_BUCKET`, vyber bucket.
+   - **Admin heslo**: **Settings → Environment variables** → **Add variable** → name `ADMIN_PASSWORD`, hodnota tvoje heslo → **Encrypt** (dôležité, aby sa neukladalo v plaintexte) → **Save**. Toto sa musí urobiť zvlášť pre Production aj Preview prostredie, ak ich používaš oboje.
+   - Po pridaní bindingu/premennej treba urobiť nový deploy (napr. **Retry deployment**), aby sa premietli do bežiacich Functions.
+   - Prihlásenie je na `https://tvoja-domena.sk/admin/`. Odkazy na zdieľané súbory majú tvar `https://tvoja-domena.sk/s/<id>`, sú verejné (bez hesla) — kdokoľvek s odkazom vidí/stiahne súbor, kým nevyprší 24-hodinová platnosť alebo ho ručne nezmažeš. Stránka `/admin/` aj `/s/*` majú `noindex` (nebudú v Google).
 
 ## Testovací checklist
 
@@ -115,6 +129,9 @@ wrangler pages deploy . --project-name=mytools
 - [ ] Mobilné zobrazenie (≤480px): hamburger menu, jednostĺpcový layout, žiadny horizontálny scroll
 - [ ] `/404` na neexistujúcej ceste zobrazí vlastnú 404 stránku
 - [ ] `robots.txt` a `sitemap.xml` sú dostupné a obsahujú správnu (nie placeholder) doménu
+- [ ] `/admin/` bez prihlásenia zobrazí login formulár; so správnym heslom sa dostaneš do panelu; s nesprávnym po 5 pokusoch príde rate-limit chyba
+- [ ] Upload malého súboru na `/admin/` vygeneruje funkčný `/s/<id>` odkaz, ktorý sa dá otvoriť v inkognito okne bez prihlásenia
+- [ ] Manuálne zmazanie súboru v admin paneli spôsobí, že jeho `/s/<id>` odkaz vráti "Link expired or not found"
 
 ## Bezpečnostné poznámky
 
@@ -122,6 +139,7 @@ wrangler pages deploy . --project-name=mytools
 - **CSP**: `script-src`/`style-src` obsahujú `'unsafe-inline'`, keďže stránky používajú malé inline `<script>` bloky (theme init, related-tools rendering) bez build kroku, ktorý by umožnil per-request nonce. Všetok user-controlled text sa pred vložením do DOM escapuje (`mtEscapeHtml`), takže reziduálne riziko je nízke, ale je to vedomý kompromis.
 - **MD5/SHA-1** v Hash Generátore sú viditeľne označené ako kryptograficky prekonané.
 - **JWT Decoder** nikdy netvrdí, že podpis je overený — iba dekóduje.
+- **`/admin/` a `/s/*`**: prihlásenie je chránené rate-limitom (5 pokusov / 15 min), heslo sa porovnáva cez konštantno-časové porovnanie SHA-256 hashov (ochrana proti timing útoku), session cookie je `HttpOnly; Secure; SameSite=Strict` a jej podpis (HMAC-SHA256) vychádza z hashu `ADMIN_PASSWORD` — bez znalosti hesla sa cookie nedá sfalšovať. Zdieľané súbory majú 128-bitové (32 hex znakov) neuhádnuteľné ID a `/s/<id>` odkaz je zámerne verejný bez hesla (to je účel zdieľania) — kto pozná odkaz, vidí súbor až do expirácie/zmazania. `ADMIN_PASSWORD` musí byť v Cloudflare dashboarde uložené ako **Encrypted** premenná, nikdy v `wrangler.toml` ani v repozitári.
 
 ## Licencie tretích strán
 
